@@ -1,0 +1,16 @@
+{
+  "name": "todoapp-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "vue": "^3.3.0",
+    "@vue/compiler-sfc": "^3.3.0",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "vite": "^4.5.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  }
+}

@@ -1,0 +1,50 @@
+services:
+  todoapp:
+    image: golang:1.24
+    container_name: todoapp
+    build:
+      context: ./backend
+      dockerfile: dockers/app.dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=test
+      - DB_PASSWORD=test
+      - DB_NAME=todoapp-db
+      - DB_SSLMODE=disable
+    env_file:
+      - .env
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=todoapp-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d todoapp-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockers/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - todoapp
+
+volumes:
+  postgres_data:

@@ -13,7 +13,7 @@ A full-stack Todo application built with Go backend and Vue.js frontend.
 
 ## Prerequisites
 
-- Go 1.21+
+- Go 1.24+
 - Docker and Docker Compose
 - Make (optional, for using Makefile commands)
 - Node.js 16+ (for frontend development)
@@ -22,17 +22,17 @@ A full-stack Todo application built with Go backend and Vue.js frontend.
 
 ```
 .
-├── backend/               # Go backend application
-│   ├── cmd/              # Application entrypoints
-│   ├── internal/         # Internal packages
-│   ├── migrations/       # Database migrations
-│   └── dockers/         # Dockerfile for backend
-├── frontend/             # Vue.js frontend application
-│   ├── src/             # Frontend source code
-│   ├── public/          # Static assets
-│   └── package.json     # Frontend dependencies
-├── docker-compose.yml    # Docker compose configuration
-└── Makefile             # Development commands
+├── backend/            # Go backend application
+│   ├── cmd/            # Application entrypoints
+│   ├── internal/       # Internal packages
+│   ├── migrations/     # Database migrations
+│   └── dockers/        # Dockerfile for backend
+├── frontend/           # Vue.js frontend application
+│   ├── src/            # Frontend source code
+│   ├── public/         # Static assets
+│   └── package.json    # Frontend dependencies
+├── docker-compose.yaml # Docker compose configuration
+└── Makefile            # Development commands
 ```
 
 ## Quick Start
@@ -58,43 +58,38 @@ Frontend: http://localhost:3000
 
 ## Development
 
-### Backend
+This project uses Docker containers for development and production environments. This ensures consistent behavior and eliminates the need to install dependencies locally.
 
+### Running the Application
+
+Start all services:
 ```bash
-cd backend
-make run      # Run backend locally
-make migrate  # Run database migrations
+make init    # First time setup (builds images and runs migrations)
+make up      # Start all services
+make down    # Stop all services
 ```
 
-### Frontend
+Access points:
+- Backend API: http://localhost:8080
+- Frontend: http://localhost:3000
 
+### Development Commands
+
+Monitor logs:
 ```bash
-cd frontend
-npm install   # Install dependencies
-npm run dev   # Start development server
+make logs    # View container logs
 ```
 
-### Running Everything
-
+Database operations:
 ```bash
-docker-compose up -d  # Start all services
+make migrate-up    # Apply migrations
+make migrate-down  # Rollback migrations
 ```
 
-### Database Migrations
-
-Create a new migration:
+Cleanup:
 ```bash
-make migrate-create name=your_migration_name
-```
-
-Apply migrations:
-```bash
-make migrate-up
-```
-
-Rollback migrations:
-```bash
-make migrate-down
+make clean   # Remove temporary files
+make rmdb    # Remove database volume
 ```
 
 ### API Endpoints
