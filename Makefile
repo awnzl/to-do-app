@@ -7,7 +7,7 @@ init: up migrate-up
 
 # Docker commands
 up:
-	docker compose up -d --build
+	docker compose up -d --build    # Builds and starts all services
 
 down:
 	docker compose down

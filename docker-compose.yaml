@@ -1,6 +1,5 @@
 services:
   todoapp:
-    image: golang:1.24
     container_name: todoapp
     build:
       context: ./backend
@@ -16,12 +15,25 @@ services:
       - DB_USER=test
       - DB_PASSWORD=test
       - DB_NAME=todoapp-db
-      - DB_SSLMODE=disable
+      - DB_SSL_MODE=disable
     env_file:
       - .env
+    networks:
+      - default
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockers/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - todoapp
+    networks:
+      - default
 
   db:
-    image: postgres:15-alpine
+    image: postgres:latest
     container_name: postgres
     environment:
       - POSTGRES_USER=test
@@ -36,15 +48,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: dockers/Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - todoapp
+    networks:
+      - default
 
 volumes:
   postgres_data:
